@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 public class QuestionActivity extends AppCompatActivity {
 
@@ -23,13 +24,19 @@ public class QuestionActivity extends AppCompatActivity {
     boolean wait = true;
     int numOfQuestions;
     String answer1;
+    List<String> answer1Array = new ArrayList<String>();
     String answer2;
+    List<String> answer2Array = new ArrayList<String>();
     String answer3;
+    List<String> answer3Array = new ArrayList<String>();
     String answer4;
+    List<String> answer4Array = new ArrayList<String>();
     String correctAnswer;
+    List<String> correctAnswerArray = new ArrayList<String>();
     int points = 300;
     int correctAnswerPoints = 500;
     String questionString;
+    List<String> questionStringArray = new ArrayList<String>();
     boolean questionSet = false;
 
     @Override
@@ -95,6 +102,7 @@ public class QuestionActivity extends AppCompatActivity {
             }
         };
         mCountDownTimer.start();
+        //return wait;
         }
 
     public ResultSet getQuestions() {
@@ -117,45 +125,65 @@ public class QuestionActivity extends AppCompatActivity {
 
     }
 
+    public void getValues() {
+        ResultSet questions = getQuestions();
+        try {
+            while (questions.next()) {
+
+                    questionStringArray.add(questions.getString("Question"));
+                    answer1Array.add(questions.getString("A"));
+                    answer2Array.add(questions.getString("B"));
+                    answer3Array.add(questions.getString("C"));
+                    answer4Array.add(questions.getString("D"));
+                    correctAnswerArray.add(questions.getString("CorrectAnswer"));
+                    setQuestion();
+
+            }
+            Toast.makeText(QuestionActivity.this, "Found Values!", Toast.LENGTH_SHORT).show();
+        } catch (Exception ex) {
+            Log.e("Exception:",ex.getMessage());
+
+        }
+
+    }
+
     public void startRound() {
 
         setQuestionNum();
+        getValues();
+        Log.i("Check",Integer.toString(questionStringArray.size()));
+        Log.i("Check",Integer.toString(numOfQuestions));
 
         //FORLOOP INSTEAD OF WHILE
 
-        while(numOfQuestions > 0) {
+        for(int i = 0; i < (numOfQuestions - 1); i++) {
 
             TextView questionNumEditText = (TextView) findViewById(R.id.questionNumTestView);
-            questionNumEditText.setText("Question " + numOfQuestions);
-            numOfQuestions--;
-            ResultSet questions = getQuestions();
-            try {
-                while (questions.next()) {
-
-                    if (questionSet == false) {
-                        questionString = questions.getString("Question");
-                        answer1 = questions.getString("A");
-                        answer2 = questions.getString("B");
-                        answer3 = questions.getString("C");
-                        answer4 = questions.getString("D");
-                        correctAnswer = questions.getString("CorrectAnswer");
-                        setQuestion();
-                        questionSet = true;
-                    }
-                    timer(10);
-                    wait(10000);
-                    if (wait == false){
-                        startRound();
-                    }
+            questionNumEditText.setText("Question " + (i+1));
+            questionString = questionStringArray.get(i);
+            answer1 = answer1Array.get(i);
+            answer2 = answer2Array.get(i);
+            answer3 = answer3Array.get(i);
+            answer4 = answer4Array.get(i);
+            correctAnswer = correctAnswerArray.get(i);
+            setQuestion();
+            timer(10);
+                try{
+                    Log.i("Check","sleepy");
+                    Thread.sleep(10000);
+                } catch(InterruptedException e){
+                    Thread.currentThread().interrupt();
                 }
-                Toast.makeText(QuestionActivity.this, "Round Ended!", Toast.LENGTH_SHORT).show();
-            } catch (Exception ex) {
-                Log.e("Exception:",ex.getMessage());
 
-            }
+
+
+
+
+
 
 
         }
+        //rounds have ended! Go to results page
     }
 }
 
