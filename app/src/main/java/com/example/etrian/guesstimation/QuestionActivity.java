@@ -168,12 +168,12 @@ public class QuestionActivity extends AppCompatActivity {
             correctAnswer = correctAnswerArray.get(i);
             setQuestion();
             timer(10);
-                try{
-                    Log.i("Check","sleepy");
-                    Thread.sleep(10000);
-                } catch(InterruptedException e){
-                    Thread.currentThread().interrupt();
-                }
+           //     try{
+           //         Log.i("Check","sleepy");
+          //          Thread.sleep(10000);
+           //     } catch(InterruptedException e){
+            //        Thread.currentThread().interrupt();
+            //    }
 
 
 
