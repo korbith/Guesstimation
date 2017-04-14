@@ -29,7 +29,6 @@ public class QuestionActivity extends AppCompatActivity {
     CountDownTimer mCountDownTimer;
     int sec=0;
     int i;
-    boolean wait = true;
     int numOfQuestions;
     String answer1;
     List<String> answer1Array = new ArrayList<String>();
@@ -45,8 +44,6 @@ public class QuestionActivity extends AppCompatActivity {
     int correctAnswerPoints = 500;
     String questionString;
     List<String> questionStringArray = new ArrayList<String>();
-    boolean questionSet = false;
-    Thread one;
     boolean needRun = true;
     private ScheduledExecutorService scheduleTaskExecutor;
     //String team = ((ApplicationController) this.getApplication()).getYourTeam();
@@ -98,6 +95,9 @@ public class QuestionActivity extends AppCompatActivity {
 
     public void timer(int seconds){
         //needRun = false;
+        if(mCountDownTimer != null){
+            mCountDownTimer.cancel();
+        }
         mProgressBar=(ProgressBar)findViewById(R.id.progressBar);
         final TextView time = (TextView)findViewById(R.id.timeTextView);
         mProgressBar.setProgress(sec);
@@ -124,9 +124,6 @@ public class QuestionActivity extends AppCompatActivity {
                 mProgressBar.setProgress(sec);
                 time.setText(null);
                 sec = 0;
-                setQuestion();
-                wait = false;
-                questionSet = false;
                 //i++;
                 needRun = true;
 
@@ -187,16 +184,15 @@ public class QuestionActivity extends AppCompatActivity {
 
         //FORLOOP INSTEAD OF WHILE
 
-        for(i = 0; i < (numOfQuestions-1);) {
-
-            scheduleTaskExecutor= Executors.newScheduledThreadPool(1);
-            final CountDownLatch latch = new CountDownLatch(1);
+        for(i = 0; i < (numOfQuestions-1); ){
+            scheduleTaskExecutor= Executors.newScheduledThreadPool(5);
+            //final CountDownLatch latch = new CountDownLatch(1);
 
 
             // This schedule a task to run every 10 seconds:
             scheduleTaskExecutor.scheduleWithFixedDelay(new Runnable() {
-                public void run() {
-                    if(needRun) {
+                    public void run () {
+                    if (needRun) {
                         //needRun = false;
                         Log.i("Schedule:", "Running");
                         TextView questionNumEditText = (TextView) findViewById(R.id.questionNumTestView);
@@ -212,8 +208,8 @@ public class QuestionActivity extends AppCompatActivity {
                         System.out.println(answer4);
                         correctAnswer = correctAnswerArray.get(i);
                         setQuestion();
-                        i++;
-                       // timer(10);
+                        //i++;
+                        // timer(10);
                         System.out.println("Does it make it here...");
 
                         needRun = false;
@@ -223,24 +219,17 @@ public class QuestionActivity extends AppCompatActivity {
                             // update your UI component here.
                             Log.i("Timer", "is running...");
                             timer(10);
+
                         }
                     });
-
+                        //mCountDownTimer.cancel();
+                        i++;
                 }
-            }, 0, 11, SECONDS);
+
+            }, 0, 10, SECONDS);
             scheduleTaskExecutor.shutdown();
-         // end of onCreate()
-            //while (wait == true) {
-            //    System.out.println("Waiting...");
-            //}
-
-
-
-
-
-
-
-
+            //mCountDownTimer.cancel();
+            //i++;
         }
         //rounds have ended! Go to results page
     }
