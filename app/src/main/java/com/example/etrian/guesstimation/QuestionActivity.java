@@ -2,6 +2,7 @@ package com.example.etrian.guesstimation;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,12 +16,19 @@ import android.widget.Toast;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class QuestionActivity extends AppCompatActivity {
 
     ProgressBar mProgressBar;
     CountDownTimer mCountDownTimer;
     int sec=0;
+    int i;
     boolean wait = true;
     int numOfQuestions;
     String answer1;
@@ -38,6 +46,10 @@ public class QuestionActivity extends AppCompatActivity {
     String questionString;
     List<String> questionStringArray = new ArrayList<String>();
     boolean questionSet = false;
+    Thread one;
+    boolean needRun = true;
+    private ScheduledExecutorService scheduleTaskExecutor;
+    //String team = ((ApplicationController) this.getApplication()).getYourTeam();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +72,23 @@ public class QuestionActivity extends AppCompatActivity {
         }
 
         setQuestion();*/
+        setActionBar();
         startRound();
+    }
+
+    public void setActionBar(){
+
+        getSupportActionBar().setTitle(((ApplicationController) this.getApplication()).getYourTeam());
+        if (((ApplicationController) this.getApplication()).getYourTeam() == "Team Red") {
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.RED));
+        } else if (((ApplicationController) this.getApplication()).getYourTeam() == "Team Blue") {
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLUE));
+        } else if (((ApplicationController) this.getApplication()).getYourTeam() == "Team Green") {
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.GREEN));
+        } else if (((ApplicationController) this.getApplication()).getYourTeam() == "Team Yellow") {
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.YELLOW));
+        }
+
     }
 
     public void setQuestionNum() {
@@ -69,13 +97,14 @@ public class QuestionActivity extends AppCompatActivity {
     }
 
     public void timer(int seconds){
-
+        //needRun = false;
         mProgressBar=(ProgressBar)findViewById(R.id.progressBar);
         final TextView time = (TextView)findViewById(R.id.timeTextView);
         mProgressBar.setProgress(sec);
-        mProgressBar.setMax(seconds);
-        mCountDownTimer=new CountDownTimer(11000,1000) {
+        mProgressBar.setMax(10);
+        //i++;
 
+        mCountDownTimer=new CountDownTimer(11000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 Log.v("Log_tag", "Tick of Progress"+ sec + millisUntilFinished);
@@ -98,9 +127,12 @@ public class QuestionActivity extends AppCompatActivity {
                 setQuestion();
                 wait = false;
                 questionSet = false;
+                //i++;
+                needRun = true;
 
             }
         };
+        System.out.println("here...");
         mCountDownTimer.start();
         //return wait;
         }
@@ -148,7 +180,6 @@ public class QuestionActivity extends AppCompatActivity {
     }
 
     public void startRound() {
-
         setQuestionNum();
         getValues();
         Log.i("Check",Integer.toString(questionStringArray.size()));
@@ -156,24 +187,52 @@ public class QuestionActivity extends AppCompatActivity {
 
         //FORLOOP INSTEAD OF WHILE
 
-        for(int i = 0; i < (numOfQuestions - 1); i++) {
+        for(i = 0; i < (numOfQuestions-1);) {
 
-            TextView questionNumEditText = (TextView) findViewById(R.id.questionNumTestView);
-            questionNumEditText.setText("Question " + (i+1));
-            questionString = questionStringArray.get(i);
-            answer1 = answer1Array.get(i);
-            answer2 = answer2Array.get(i);
-            answer3 = answer3Array.get(i);
-            answer4 = answer4Array.get(i);
-            correctAnswer = correctAnswerArray.get(i);
-            setQuestion();
-            timer(10);
-           //     try{
-           //         Log.i("Check","sleepy");
-          //          Thread.sleep(10000);
-           //     } catch(InterruptedException e){
-            //        Thread.currentThread().interrupt();
-            //    }
+            scheduleTaskExecutor= Executors.newScheduledThreadPool(1);
+            final CountDownLatch latch = new CountDownLatch(1);
+
+
+            // This schedule a task to run every 10 seconds:
+            scheduleTaskExecutor.scheduleWithFixedDelay(new Runnable() {
+                public void run() {
+                    if(needRun) {
+                        //needRun = false;
+                        Log.i("Schedule:", "Running");
+                        TextView questionNumEditText = (TextView) findViewById(R.id.questionNumTestView);
+                        questionNumEditText.setText("Question " + (i + 1));
+                        questionString = questionStringArray.get(i);
+                        answer1 = answer1Array.get(i);
+                        System.out.println(answer1);
+                        answer2 = answer2Array.get(i);
+                        System.out.println(answer2);
+                        answer3 = answer3Array.get(i);
+                        System.out.println(answer3);
+                        answer4 = answer4Array.get(i);
+                        System.out.println(answer4);
+                        correctAnswer = correctAnswerArray.get(i);
+                        setQuestion();
+                        i++;
+                       // timer(10);
+                        System.out.println("Does it make it here...");
+
+                        needRun = false;
+                    }
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            // update your UI component here.
+                            Log.i("Timer", "is running...");
+                            timer(10);
+                        }
+                    });
+
+                }
+            }, 0, 11, SECONDS);
+            scheduleTaskExecutor.shutdown();
+         // end of onCreate()
+            //while (wait == true) {
+            //    System.out.println("Waiting...");
+            //}
 
 
 

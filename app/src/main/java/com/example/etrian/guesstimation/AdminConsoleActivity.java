@@ -1,5 +1,6 @@
 package com.example.etrian.guesstimation;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -27,12 +28,22 @@ public class AdminConsoleActivity extends AppCompatActivity {
         String result = ((ApplicationController) this.getApplication()).manipulateQuery(QueryThis);
         if (result.equals("query successful")) {
             Toast.makeText(AdminConsoleActivity.this, "Question Successfully Added", Toast.LENGTH_SHORT).show();
+            ((EditText) findViewById(R.id.questionEditText)).setText("");
+            ((EditText) findViewById(R.id.incorrect1)).setText("");
+            ((EditText) findViewById(R.id.incorrect2)).setText("");
+            ((EditText) findViewById(R.id.incorrect3)).setText("");
+            ((EditText) findViewById(R.id.correctanswer)).setText("");
         } else {
             Toast.makeText(AdminConsoleActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
         }
 
+    }
 
+    public void goBackPressed(View view) {
 
+        Intent intent = new Intent(AdminConsoleActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
 
     }
 }
