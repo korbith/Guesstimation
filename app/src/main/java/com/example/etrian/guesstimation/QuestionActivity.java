@@ -185,52 +185,44 @@ public class QuestionActivity extends AppCompatActivity {
         //FORLOOP INSTEAD OF WHILE
 
         for(i = 0; i < (numOfQuestions-1); ){
-            scheduleTaskExecutor= Executors.newScheduledThreadPool(5);
-            //final CountDownLatch latch = new CountDownLatch(1);
-
+            scheduleTaskExecutor= Executors.newScheduledThreadPool(20);
 
             // This schedule a task to run every 10 seconds:
-            scheduleTaskExecutor.scheduleWithFixedDelay(new Runnable() {
-                    public void run () {
-                    if (needRun) {
-                        //needRun = false;
-                        Log.i("Schedule:", "Running");
-                        TextView questionNumEditText = (TextView) findViewById(R.id.questionNumTestView);
-                        questionNumEditText.setText("Question " + (i + 1));
-                        questionString = questionStringArray.get(i);
-                        answer1 = answer1Array.get(i);
-                        System.out.println(answer1);
-                        answer2 = answer2Array.get(i);
-                        System.out.println(answer2);
-                        answer3 = answer3Array.get(i);
-                        System.out.println(answer3);
-                        answer4 = answer4Array.get(i);
-                        System.out.println(answer4);
-                        correctAnswer = correctAnswerArray.get(i);
-                        setQuestion();
-                        //i++;
-                        // timer(10);
-                        System.out.println("Does it make it here...");
+            scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {
+                                                         @Override
+                                                         public void run() {
+                                                             Log.i("Schedule:", "Running");
+                                                             TextView questionNumEditText = (TextView) findViewById(R.id.questionNumTestView);
+                                                             questionNumEditText.setText("Question " + (i + 1));
+                                                             questionString = questionStringArray.get(i);
+                                                             answer1 = answer1Array.get(i);
+                                                             System.out.println(answer1);
+                                                             answer2 = answer2Array.get(i);
+                                                             System.out.println(answer2);
+                                                             answer3 = answer3Array.get(i);
+                                                             System.out.println(answer3);
+                                                             answer4 = answer4Array.get(i);
+                                                             System.out.println(answer4);
+                                                             correctAnswer = correctAnswerArray.get(i);
+                                                             setQuestion();
+                                                             System.out.println("Does it make it here...");
 
-                        needRun = false;
-                    }
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            // update your UI component here.
-                            Log.i("Timer", "is running...");
-                            timer(10);
+                                                             runOnUiThread(new Runnable() {
+                                                                               public void run() {
+                                                                                   // update your UI component here.
+                                                                                   Log.i("Timer", "is running...");
+                                                                                   timer(10);
+                                                                               }
+                                                                               });
+                                                             if(i >= questionStringArray.size()){
+                                                                 scheduleTaskExecutor.shutdown();
+                                                             }
+                                                         }
 
-                        }
-                    });
-                        //mCountDownTimer.cancel();
-                        i++;
-                }
 
             }, 0, 10, SECONDS);
-            scheduleTaskExecutor.shutdown();
-            //mCountDownTimer.cancel();
-            //i++;
         }
+        i++;
         //rounds have ended! Go to results page
     }
 }

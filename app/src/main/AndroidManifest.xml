@@ -27,7 +27,8 @@
         </activity>
         <activity android:name=".SelectTeamActivity" />
         <activity android:name=".QuestionActivity" />
-        <activity android:name=".AdminConsoleActivity"></activity>
+        <activity android:name=".AdminConsoleActivity" />
+        <activity android:name=".GameOverActivity"></activity>
     </application>
 
 </manifest>
