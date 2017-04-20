@@ -27,7 +27,7 @@ public class SelectTeamActivity extends AppCompatActivity {
         int classCode = Integer.parseInt(classCodeEditText.getText().toString());
 
         ((ApplicationController) this.getApplication()).setclassCode(classCode);
-
+        ((ApplicationController) this.getApplication()).setScore(0);
         Intent intent = new Intent(SelectTeamActivity.this, QuestionActivity.class);
         startActivity(intent);
         finish();

@@ -1,7 +1,10 @@
 package com.example.etrian.guesstimation;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 public class GameOverActivity extends AppCompatActivity {
 
@@ -9,20 +12,23 @@ public class GameOverActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_over);
+        setText();
+        System.out.println(((ApplicationController) this.getApplication()).getScore());
     }
 
-    //Get the scores for each team and calculate the winner
-    //Once winner is calcuilated then display it to the activity with the team name and final score
+    public void setText() {
+        TextView score = (TextView) findViewById(R.id.scoreTextView);
+        //int finalScore = (((ApplicationController) this.getApplication()).getScore());
+        score.setText("test");
+    }
 
+    public void playAgainButtonPressed(View view){
 
-    //Add a Play Again button
-    //If play again button is pressed... Clean everything up and send back to SelectTeamActivity
+        ((ApplicationController) this.getApplication()).setScore(0);
+        Intent intent = new Intent(GameOverActivity.this, SelectTeamActivity.class);
+        startActivity(intent);
+        finish();
 
-    //Add quit button that returns to MainActivity if pressed
-
-
-    //The whole activty should not last longer than 15 seconds and returns to main activity after timeout
-
-
+    }
 
 }
