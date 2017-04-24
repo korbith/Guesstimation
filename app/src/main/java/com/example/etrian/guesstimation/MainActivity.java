@@ -58,6 +58,14 @@ public class MainActivity extends AppCompatActivity {
         finish();
 
     }
+    public void createAccountPressed(View view) {
+
+        Intent intent = new Intent(MainActivity.this, CreateAccountActivity.class);
+        startActivity(intent);
+        finish();
+
+    }
+
 
 
     @Override
@@ -68,14 +76,17 @@ public class MainActivity extends AppCompatActivity {
         ImageView guessLogo = (ImageView) findViewById(R.id.guessLogo);
         TextView playNowButton = (TextView) findViewById(R.id.playNowButton);
         TextView logInAdminButton = (TextView) findViewById(R.id.loginTextView);
+        TextView createAccount = (TextView) findViewById(R.id.createTextView);
 
         guessLogo.setTranslationY(-1000f);
         playNowButton.setAlpha(0f);
         logInAdminButton.setAlpha(0f);
+        createAccount.setAlpha(0f);
 
         guessLogo.animate().translationY(0f).setDuration(2000);
         playNowButton.animate().alpha(1f).setDuration(3000);
         logInAdminButton.animate().alpha(1f).setDuration(3500);
+        createAccount.animate().alpha(1f).setDuration(3500);
     }
 
 

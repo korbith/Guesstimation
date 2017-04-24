@@ -8,6 +8,10 @@ import android.widget.TextView;
 
 public class GameOverActivity extends AppCompatActivity {
 
+
+
+    int finalScore = (((ApplicationController) this.getApplication()).getScore());
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,8 +22,8 @@ public class GameOverActivity extends AppCompatActivity {
 
     public void setText() {
         TextView score = (TextView) findViewById(R.id.scoreTextView);
-        //int finalScore = (((ApplicationController) this.getApplication()).getScore());
-        score.setText("test");
+
+        score.setText(Integer.toString(finalScore));
     }
 
     public void playAgainButtonPressed(View view){

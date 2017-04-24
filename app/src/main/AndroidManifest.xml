@@ -28,7 +28,8 @@
         <activity android:name=".SelectTeamActivity" />
         <activity android:name=".QuestionActivity" />
         <activity android:name=".AdminConsoleActivity" />
-        <activity android:name=".GameOverActivity"></activity>
+        <activity android:name=".GameOverActivity" />
+        <activity android:name=".CreateAccountActivity"></activity>
     </application>
 
 </manifest>

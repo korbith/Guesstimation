@@ -18,20 +18,14 @@ public class AdminConsoleActivity extends AppCompatActivity {
     public void submitQuestionPressed(View view) {
 
         String question = ((EditText)findViewById(R.id.questionEditText)).getText().toString();
-        String incorrect1 = ((EditText)findViewById(R.id.incorrect1)).getText().toString();
-        String incorrect2 = ((EditText)findViewById(R.id.incorrect2)).getText().toString();
-        String incorrect3 = ((EditText)findViewById(R.id.incorrect3)).getText().toString();
         String correctAnswer = ((EditText)findViewById(R.id.correctanswer)).getText().toString();
 
-        String QueryThis = String.format("Insert into Question (Question,A,B,C,D,Points,CorrectAnswer,CorrectAnswerPoints) Values ('%s','%s','%s','%s','%s','300','%s','500')", question, incorrect1, incorrect2, incorrect3, correctAnswer, correctAnswer);
+        String QueryThis = String.format("Insert into Question (Question,A,B,C,D,Points,CorrectAnswer,CorrectAnswerPoints) Values ('%s','%s','%s','%s','%s','300','%s','500')", question, "", "", "", correctAnswer, correctAnswer);
 
         String result = ((ApplicationController) this.getApplication()).manipulateQuery(QueryThis);
         if (result.equals("query successful")) {
             Toast.makeText(AdminConsoleActivity.this, "Question Successfully Added", Toast.LENGTH_SHORT).show();
             ((EditText) findViewById(R.id.questionEditText)).setText("");
-            ((EditText) findViewById(R.id.incorrect1)).setText("");
-            ((EditText) findViewById(R.id.incorrect2)).setText("");
-            ((EditText) findViewById(R.id.incorrect3)).setText("");
             ((EditText) findViewById(R.id.correctanswer)).setText("");
         } else {
             Toast.makeText(AdminConsoleActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();

@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -83,15 +84,15 @@ public class QuestionActivity extends AppCompatActivity {
 
     public void setQuestion() {
         TextView question = (TextView) findViewById(R.id.questionTextView);
-        RadioButton option1 = (RadioButton) findViewById(R.id.answer1);
-        RadioButton option2 = (RadioButton) findViewById(R.id.answer2);
-        RadioButton option3 = (RadioButton) findViewById(R.id.answer3);
-        RadioButton option4 = (RadioButton) findViewById(R.id.answer4);
+        //RadioButton option1 = (RadioButton) findViewById(R.id.answer1);
+        //RadioButton option2 = (RadioButton) findViewById(R.id.answer2);
+        //RadioButton option3 = (RadioButton) findViewById(R.id.answer3);
+        ////RadioButton option4 = (RadioButton) findViewById(R.id.answer4);
         question.setText(questionString);
-        option1.setText(answer1);
-        option2.setText(answer2);
-        option3.setText(answer3);
-        option4.setText(answer4);
+        //option1.setText(answer1);
+        //option2.setText(answer2);
+        //option3.setText(answer3);
+        //option4.setText(answer4);
 
     }
 
@@ -113,8 +114,8 @@ public class QuestionActivity extends AppCompatActivity {
         }
 
     }
-
-    public void answerSelected(View view) {
+    //doesnt do anything now but keeping becuase I put in a lot of effort :(
+    /*public void answerSelected(View view) {
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         int checkedRadio = radioGroup.getCheckedRadioButtonId();
         RadioButton radio = (RadioButton) findViewById(checkedRadio);
@@ -133,6 +134,26 @@ public class QuestionActivity extends AppCompatActivity {
         }
 
 
+    }*/
+
+    public void submitButtonPressed(View view) {
+
+        EditText answerEditText = ((EditText) findViewById(R.id.answerEditText));
+        answerEditText.setText("");
+
+        String answer = ((EditText) findViewById(R.id.answerEditText)).getText().toString();
+        if(answer.equals(correctAnswer)){
+            ((ApplicationController) this.getApplication()).updateScore(correctAnswerPoints);
+            Toast.makeText(QuestionActivity.this, "Correct!", Toast.LENGTH_SHORT).show();
+            System.out.println(((ApplicationController) this.getApplication()).getScore());
+            startRound();
+        }else {
+            ((ApplicationController) this.getApplication()).updateScore(points);
+            Toast.makeText(QuestionActivity.this, "Aww... that was incorrect :/", Toast.LENGTH_SHORT).show();
+            System.out.println(((ApplicationController) this.getApplication()).getScore());
+            startRound();
+        }
+
     }
 
     public void startRound() {
@@ -144,13 +165,13 @@ public class QuestionActivity extends AppCompatActivity {
                 questionNumEditText.setText("Question " + (i + 1));
                 questionString = questionStringArray.get(i);
                 answer1 = answer1Array.get(i);
-                System.out.println(answer1);
+                //System.out.println(answer1);
                 answer2 = answer2Array.get(i);
-                System.out.println(answer2);
+                //System.out.println(answer2);
                 answer3 = answer3Array.get(i);
-                System.out.println(answer3);
+                //System.out.println(answer3);
                 answer4 = answer4Array.get(i);
-                System.out.println(answer4);
+                //System.out.println(answer4);
                 correctAnswer = correctAnswerArray.get(i);
                 setQuestion();
                 i++;
