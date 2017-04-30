@@ -46,6 +46,7 @@ public class QuestionActivity extends AppCompatActivity {
     String questionString;
     List<String> questionStringArray = new ArrayList<String>();
     boolean finished = false;
+    String answer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,9 +140,12 @@ public class QuestionActivity extends AppCompatActivity {
     public void submitButtonPressed(View view) {
 
         EditText answerEditText = ((EditText) findViewById(R.id.answerEditText));
-        answerEditText.setText("");
 
-        String answer = ((EditText) findViewById(R.id.answerEditText)).getText().toString();
+        answer = ((EditText) findViewById(R.id.answerEditText)).getText().toString();
+        answerEditText.setText("");
+        System.out.println(answer);
+        System.out.println("BLAHHHHHH");
+        System.out.println(correctAnswer);
         if(answer.equals(correctAnswer)){
             ((ApplicationController) this.getApplication()).updateScore(correctAnswerPoints);
             Toast.makeText(QuestionActivity.this, "Correct!", Toast.LENGTH_SHORT).show();
